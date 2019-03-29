@@ -19,7 +19,7 @@ ingress:
     # - secretName: grafana-tls
     #   hosts:
     #     - grafana.local
-persistence
+persistence:
   enabled: false
   storageClass: ""
   accessMode: ReadWriteMany
