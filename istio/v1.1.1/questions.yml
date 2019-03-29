@@ -87,16 +87,6 @@ questions:
   options:
     - "ClusterIP"
     - "NodePort"
-- variable: gateways.istio-egressgateway.type
-  default: "ClusterIP"
-  description: "Enable to allows Istio to expose external services to Istio-enabled clients by defining ServiceEntry configurations"
-  type: enum
-  label: Service Type of Istio Egress Gateway
-  group: "Istio Gateways"
-  options:
-    - "ClusterIP"
-    - "NodePort"
-
 # tracing settings
 - variable: tracing.enabled
   default: true
