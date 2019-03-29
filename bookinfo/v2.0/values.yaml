@@ -4,7 +4,6 @@
 enabledTLS: false
 enabledGoogleEgress: true
 
-
 productpage:
   # options: v1
   version: v1
