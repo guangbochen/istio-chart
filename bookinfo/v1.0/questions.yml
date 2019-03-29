@@ -1,0 +1,46 @@
+namespace: default
+questions:
+- variable: enabledTLS
+  default: false
+  required: true
+  label: Enable Mutual TLS of BookInfo Destination Rules
+  type: boolean
+  group: "Default"
+
+- variable: virtualService.productpage.version
+  default: "v1"
+  description: "Select product page version"
+  type: enum
+  label: Product Page Version
+  options:
+    - "v1"
+  group: "Version"
+
+- variable: virtualService.reviews.version
+  default: ""
+  description: "Select product reviews version"
+  type: enum
+  label: Product Reviews Version
+  options:
+    - "v1"
+    - "v2"
+    - "v3"
+  group: "Version"
+
+- variable: virtualService.ratings.version
+  default: "v1"
+  description: "Select product ratings version"
+  type: enum
+  label: Product Ratings Version
+  options:
+    - "v1"
+  group: "Version"
+
+- variable: virtualService.details.version
+  default: "v1"
+  description: "Select product details version"
+  type: enum
+  label: Product Details Version
+  options:
+    - "v1"
+  group: "Version"

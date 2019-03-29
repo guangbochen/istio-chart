@@ -1,0 +1,19 @@
+# Default values for bookinfo.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+enabledTLS: false
+
+
+virtualService:
+    productpage:
+      # options: v1
+      version: v1
+    reviews:
+      # options: v1/v2/v3
+      version:
+    ratings:
+      # options: v1
+      version: v1
+    details:
+      # options: v1
+      version: v1

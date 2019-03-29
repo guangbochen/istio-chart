@@ -1,0 +1,44 @@
+##################################################################################################
+# Details service
+##################################################################################################
+{{- if .Values.details.v1.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: details-v1
+  labels:
+    app: details
+    version: v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: details
+        version: v1
+    spec:
+      containers:
+      - name: details
+        image: istio/examples-bookinfo-details-v1:1.10.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9080
+        resources:
+          requests:
+            memory: "20Mi"
+            cpu: "5m"
+---
+{{- end }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: details
+  labels:
+    app: details
+    service: details
+spec:
+  ports:
+  - port: 9080
+    name: http
+  selector:
+    app: details
