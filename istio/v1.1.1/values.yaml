@@ -101,6 +101,9 @@ istiocoredns:
 
 # Common settings used among istio subcharts.
 global:
+  rancher:
+    domain: ""
+    clusterId: ""
   # Default hub for Istio images.
   # Releases are published to docker hub under 'istio' project.
   # Daily builds from prow are on gcr.io, and nightly builds from circle on docker.io/istionightly

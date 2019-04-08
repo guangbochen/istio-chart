@@ -22,7 +22,8 @@ spec:
         scheduler.alpha.kubernetes.io/critical-pod: ""
     spec:
       securityContext:
-        runAsUser: 472
+        runAsNonRoot: false
+        runAsUser: 0
         fsGroup: 472
 {{- if .Values.global.priorityClassName }}
       priorityClassName: "{{ .Values.global.priorityClassName }}"
@@ -33,6 +34,33 @@ spec:
         - name: {{ . }}
 {{- end }}
 {{- end }}
+      initContainers:
+      - name: grafana-init-plugin-json-copy
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        {{- if and .Values.resources .Values.resources.inits }}
+        resources:
+{{ toYaml .Values.resources.inits | indent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: grafana-nginx
+          mountPath: /run.sh
+          subPath: copy-datasource-plugin-json.sh
+        - name: grafana-static-contents
+          mountPath: /host
+      - name: grafana-init-plugin-json-modify
+        image: {{ .Values.image.tool.repository }}:{{ .Values.image.tool.tag }}
+        command:
+        - /run.sh
+        {{- if and .Values.resources .Values.resources.inits }}
+        resources:
+{{ toYaml .Values.resources.inits | indent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: grafana-nginx
+          mountPath: /run.sh
+          subPath: modify-datasource-plugin-json.sh
+        - name: grafana-static-contents
+          mountPath: /host
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -95,12 +123,46 @@ spec:
           - name: config
             mountPath: "/etc/grafana/provisioning/dashboards/dashboardproviders.yaml"
             subPath: dashboardproviders.yaml
+        - name: grafana-proxy
+          image: {{ .Values.image.proxy.repository }}:{{ .Values.image.proxy.tag }}
+          args:
+          - nginx
+          - -g
+          - daemon off;
+          - -c
+          - /nginx/nginx.conf
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /nginx/
+            name: grafana-nginx
+          {{- if and .Values.resources .Values.resources.proxy }}
+          resources:
+  {{ toYaml .Values.resources.proxy | indent 10 }}
+          {{- end }}
       affinity:
       {{- include "nodeaffinity" . | indent 6 }}
       volumes:
       - name: config
         configMap:
           name: istio-grafana
+      - name: grafana-static-contents
+        emptyDir: {}
+      - name: grafana-nginx
+        configMap:
+          name: grafana-nginx
+          items:
+          - key: nginx.conf
+            mode: 438
+            path: nginx.conf
+          - key: copy-datasource-plugin-json.sh
+            mode: 0777
+            path: copy-datasource-plugin-json.sh
+          - key: modify-datasource-plugin-json.sh
+            mode: 0777
+            path: modify-datasource-plugin-json.sh
       - name: data
 {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:

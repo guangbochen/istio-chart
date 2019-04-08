@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 items:
+{{- if eq .Values.provider "zipkin" }}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -28,6 +29,7 @@ items:
         name: {{ .Values.service.name }}
     selector:
       app: {{ .Values.provider }}
+{{- else }}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -42,6 +44,7 @@ items:
       chart: {{ template "tracing.chart" . }}
       heritage: {{ .Release.Service }}
       release: {{ .Release.Name }}
+      kubernetes.io/cluster-service: "true"
   spec:
     type: {{ .Values.service.uiType }}
     ports:
@@ -55,3 +58,4 @@ items:
 {{ end}}
     selector:
       app: {{ .Values.provider }}
+{{- end }}

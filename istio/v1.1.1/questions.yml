@@ -46,9 +46,9 @@ questions:
     description: "The jaeger image tag"
     type: string
     label: Jaeger Image Tag
-  - variable: prometheus.hub
-    default: "docker.io/prom"
-    description: "The prometheuscomponent image repository"
+  - variable: prometheus.repository
+    default: "docker.io/prom/prometheus"
+    description: "The prometheus component image repository"
     type: string
     label: Prometheus Image Repository
   - variable: prometheus.tag
@@ -56,14 +56,24 @@ questions:
     description: "The prometheus image tag"
     type: string
     label: Prometheus Image Tag
-  - variable: kiali.hub
-    default: "docker.io/kiali"
+  - variable: kiali.image.repository
+    default: "docker.io/kiali/kiali"
     description: "The kiali image repository"
     type: string
     label: Kiali Image Repository
-  - variable: kiali.tag
-    default: "v0.14"
+  - variable: kiali.image.tag
+    default: "v0.17"
     description: "The kiali image tag"
+    type: string
+    label: Kiali Image Tag
+  - variable: kiali.image.proxy.repository
+    default: "rancher/nginx"
+    description: "The kiali proxy image repository"
+    type: string
+    label: Kiali Image Repository
+  - variable: kiali.image.proxy.tag
+    default: "1.15.8-alpine"
+    description: "The kiali proxy image tag"
     type: string
     label: Kiali Image Tag
   - variable: certmanager.hub
@@ -76,7 +86,20 @@ questions:
     description: "The jetstack image tag"
     type: string
     label: Certmanager Image Tag
-
+- variable: global.rancher.domain
+  default: ""
+  description: "Provide Rancher domain name, e.g myrancher.com"
+  type: string
+  required: true
+  label: Rancher Domain name
+  group: "Configurations"
+- variable: global.rancher.clusterId
+  default: ""
+  description: "Provide Rancher Cluster ID of system proxy"
+  type: string
+  required: true
+  label: Rancher Cluster ID
+  group: "Configurations"
 # gateways settings
 - variable: gateways.istio-ingressgateway.type
   default: "NodePort"
@@ -95,31 +118,6 @@ questions:
   required: true
   label: Enabled the Tracing Component
   group: "Tracing Component Settings"
-- variable: tracing.service.uiType
-  default: "NodePort"
-  description: "Tracing service type"
-  type: enum
-  label: Tracing Service Type
-  show_if: "tracing.enabled=true"
-  group: "Tracing Component Settings"
-  options:
-    - "ClusterIP"
-    - "NodePort"
-- variable: tracing.ingress.enabled
-  default: false
-  description: "Expose tracing using Layer 7 Load Balancer - ingress"
-  type: boolean
-  label: Expose Tracing using Layer 7 Load Balancer
-  group: "Tracing Component Settings"
-  show_if: "tracing.enabled=true"
-  show_subquestion_if: "true"
-  subquestions:
-  - variable: tracing.ingress.hosts[0]
-    default: "xip.io"
-    description: "The hostname to access tracing"
-    type: hostname
-    label: Hostname to Access Tracing
-
 # kiali settings
 - variable: kiali.enabled
   default: true
@@ -128,32 +126,6 @@ questions:
   required: true
   label: Enable Istio Kiali
   group: "Kiali Configurations"
-- variable: kiali.service.type
-  default: "NodePort"
-  description: "Kiali service type"
-  type: enum
-  label: Kiali Service Type
-  group: "Kiali Configurations"
-  show_if: "kiali.enabled=true"
-  options:
-    - "ClusterIP"
-    - "NodePort"
-- variable: kiali.ingress.enabled
-  default: false
-  description: "Expose kiali using Layer 7 Load Balancer - ingress"
-  type: boolean
-  label: Expose Kiali using Layer 7 Load Balancer
-  show_if: "kiali.enabled=true"
-  show_subquestion_if: true
-  group: "Kiali Configurations"
-  subquestions:
-  - variable: kiali.ingress.hosts[0]
-    default: "xip.io"
-    description: "The hostname to access kiali server"
-    type: hostname 
-    label: Hostname to Access Kiali Server 
-    show_if: "kiali.enabled=true&&kiali.ingress.enabled=true"
-
 # Prometheus settings
 - variable: prometheus.enabled 
   default: true
@@ -163,23 +135,6 @@ questions:
   label: Enable the prometheus Server 
   show_subquestion_if: true
   group: "Prometheus Settings"
-- variable: prometheus.service.nodePort.enabled
-  default: true
-  description: "Enable NodePort Service for Prometheus Server"
-  type: boolean
-  label: Enable Prometheus NodePort Service
-  group: "Prometheus Settings"
-  show_if: "prometheus.enabled=true"
-- variable: prometheus.service.nodePort.port
-  default: "32090"
-  description: "NodePort http port(to set explicitly, choose port between 30000-32767)"
-  type: int
-  min: 30000
-  max: 32767
-  show_if: "prometheus.enabled=true&&prometheus.service.nodePort.enabled=true"
-  group: "Prometheus Settings"
-  label: Prometheus NodePort Http Port
-
 # Grafana Settings
 - variable: grafana.enabled 
   default: false
@@ -190,15 +145,6 @@ questions:
   group: "Grafana Settings"
   show_subquestion_if: true
   subquestions:
-  - variable: grafana.service.type
-    default: "NodePort"
-    description: "Grafana service type"
-    type: enum 
-    label: Grafana Service Type 
-    group: "Grafana Settings"
-    options:
-      - "ClusterIP"
-      - "NodePort"
 - variable: grafana.persistence.enabled
   default: false
   description: "Enable persistent volume for Grafana"

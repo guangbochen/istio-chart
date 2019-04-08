@@ -3,8 +3,12 @@
 #
 enabled: false
 replicaCount: 1
-hub: docker.io/kiali
-tag: v0.14
+image:
+  repository: docker.io/kiali/kiali
+  tag: v0.17
+  proxy:
+    repository: rancher/nginx
+    tag: 1.15.8-alpine
 contextPath: /
 nodeSelector: {}
 ingress:
@@ -22,6 +26,8 @@ ingress:
     #     - kiali.local
 
 dashboard:
+  # login/anonymous
+  authStrategy: anonymous
   secretName: kiali
   username: admin
   passphrase: admin
@@ -34,4 +40,6 @@ dashboard:
 prometheusAddr: http://prometheus:9090
 
 service:
-  type: NodePort
+  type: ClusterIP
+
+resources: {}
