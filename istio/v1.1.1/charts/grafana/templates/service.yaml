@@ -16,18 +16,11 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.externalPort }}
-      targetPort: 80
-      protocol: TCP
-      name: {{ .Values.service.name }}
+  - name: http-access-grafana
+    protocol: TCP
+    targetPort: 80
+    port: 80
   selector:
     app: grafana
-{{- if .Values.service.loadBalancerIP }}
-  loadBalancerIP: "{{ .Values.service.loadBalancerIP }}"
-{{- end }}
-  {{if .Values.service.loadBalancerSourceRanges}}
-  loadBalancerSourceRanges:
-    {{range $rangeList := .Values.service.loadBalancerSourceRanges}}
-    - {{ $rangeList }}
-    {{end}}
-  {{end}}
+
+

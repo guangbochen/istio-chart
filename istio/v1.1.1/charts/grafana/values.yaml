@@ -36,11 +36,7 @@ nodeSelector: {}
 contextPath: /grafana
 service:
   annotations: {}
-  name: access-grafana
   type: ClusterIP
-  externalPort: 80
-  loadBalancerIP:
-  loadBalancerSourceRanges:
 
 datasources:
   datasources.yaml:
