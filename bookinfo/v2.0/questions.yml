@@ -36,13 +36,13 @@ questions:
     - "v2-mysql"
     - "v2-mysql-vm"
   group: "Version"
-- variable: details.versions[0].version
+- variable: details[0].version
   default: "v1"
   description: "Enable specified version of product details"
   type: string
   label: Specify First Product Details Version
   group: "Details Version"
-- variable: details.versions[0].weight
+- variable: details[0].weight
   default: 50
   description: "Set percentage of traffic to the v1 of product details"
   type: int
@@ -50,13 +50,13 @@ questions:
   max: 100
   label: Traffic Weight of First Deatils Version
   group: "Details Version"
-- variable: details.versions[1].version
+- variable: details[1].version
   default: "v2"
   description: "Enable specified version of product details"
   type: string
   label: Specify Second Product Details Version
   group: "Details Version"
-- variable: details.versions[1].weight
+- variable: details[1].weight
   default: 50
   type: int
   min: 0
