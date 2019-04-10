@@ -45,7 +45,9 @@ spec:
   - route:
     - destination:
         host: ratings
+        {{- if .Values.ratings.version }}
         subset: {{ .Values.ratings.version | quote }}
+        {{- end }}
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -57,10 +59,10 @@ spec:
   http:
   - route:
   {{- range $key, $value := .Values.details -}}
-  {{- if $value.enabled }}
+  {{- if ne ($value.weight | toString) "0" }}
     - destination:
         host: details
-        subset: {{ $key }}
+        subset: {{ $value.version }}
       weight: {{ $value.weight }}
   {{- end }}
   {{- end -}}

@@ -160,6 +160,7 @@ metadata:
     app: productpage
     service: productpage
 spec:
+  type: NodePort
   ports:
   - port: 9080
     name: http
