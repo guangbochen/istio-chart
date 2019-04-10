@@ -6,7 +6,6 @@ questions:
   label: Enable Mutual TLS of BookInfo Destination Rules
   type: boolean
   group: "Default"
-
 - variable: productpage.version
   default: "v1"
   description: "Select product page version"
@@ -15,7 +14,6 @@ questions:
   options:
     - "v1"
   group: "Version"
-
 - variable: reviews.version
   default: ""
   description: "Select product reviews version"
@@ -38,11 +36,10 @@ questions:
     - "v2-mysql"
     - "v2-mysql-vm"
   group: "Version"
-
 - variable: details.versions[0].version
   default: "v1"
   description: "Enable specified version of product details"
-  type: boolean
+  type: string
   label: Specify First Product Details Version
   group: "Details Version"
 - variable: details.versions[0].weight
@@ -56,7 +53,7 @@ questions:
 - variable: details.versions[1].version
   default: "v2"
   description: "Enable specified version of product details"
-  type: boolean
+  type: string
   label: Specify Second Product Details Version
   group: "Details Version"
 - variable: details.versions[1].weight
