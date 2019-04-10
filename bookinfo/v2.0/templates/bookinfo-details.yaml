@@ -29,4 +29,5 @@ spec:
           requests:
             memory: "20Mi"
             cpu: "5m"
+---
 {{- end }}
