@@ -76,18 +76,18 @@ questions:
     description: "The jetstack image tag"
     type: string
     label: Certmanager Image Tag
-- variable: global.rancher.domain
-  default: ""
-  description: "Provide Rancher domain name, e.g myrancher.com"
-  type: string
-  label: Rancher Domain name
-  group: "Configurations"
-- variable: global.rancher.clusterId
-  default: ""
-  description: "Provide Rancher Cluster ID of system proxy"
-  type: string
-  label: Rancher Cluster ID
-  group: "Configurations"
+# - variable: global.rancher.domain
+#   default: ""
+#   description: "Provide Rancher domain name, e.g myrancher.com"
+#   type: string
+#   label: Rancher Domain name
+#   group: "Configurations"
+# - variable: global.rancher.clusterId
+#   default: ""
+#   description: "Provide Rancher Cluster ID of system proxy"
+#   type: string
+#   label: Rancher Cluster ID
+#   group: "Configurations"
 # gateways settings
 - variable: gateways.istio-ingressgateway.type
   default: "NodePort"
