@@ -54,11 +54,12 @@ metadata:
 spec:
   host: details
   subsets:
-  - name: v1
+  {{- range $key, $value := .Values.details -}}
+  {{- if ne ($value.weight | toString) "0" }}
+  - name: {{ $value.version }}
     labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
+      version: {{ $value.version }}
+  {{- end }}
+  {{- end -}}
 ---
 {{- end }}

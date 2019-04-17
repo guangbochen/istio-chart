@@ -31,3 +31,17 @@ spec:
             cpu: "5m"
 ---
 {{- end }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: details
+  labels:
+    app: details
+    service: details
+spec:
+  ports:
+  - port: 9080
+    name: http
+  selector:
+    app: details
