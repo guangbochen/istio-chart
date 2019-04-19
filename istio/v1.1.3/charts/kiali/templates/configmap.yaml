@@ -16,11 +16,15 @@ data:
     external_services:
       istio:
         url_service_version: http://istio-pilot:8080/version
-      {{- if .Values.dashboard.jaegerURL }}
       jaeger:
+        service: "jaeger-query"
+        {{- if .Values.dashboard.jaegerURL }}
         url: {{ .Values.dashboard.jaegerURL }}
-      {{- end }}
-      {{- if .Values.dashboard.grafanaURL }}
+        {{- end }}
       grafana:
+        custom_metrics_url: "http://prometheus.{{ .Release.Namespace }}:9090"
+        {{- if .Values.dashboard.grafanaURL }}
         url: {{ .Values.dashboard.grafanaURL }}
-      {{- end }}
+        {{- else }}
+        url: "http://prometheus.{{ .Release.Namespace }}:9090"
+        {{- end }}
