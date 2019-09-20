@@ -28,7 +28,7 @@ spec:
   selector:
     app: ratings
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ratings-v1
@@ -36,6 +36,10 @@ metadata:
     app: ratings
     version: v1
 spec:
+  selector:
+    matchLabels: 
+      app: ratings
+      version: v1
   replicas: 1
   template:
     metadata:
@@ -71,7 +75,7 @@ spec:
   selector:
     app: reviews
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v1
@@ -79,6 +83,10 @@ metadata:
     app: reviews
     version: v1
 spec:
+  selector:
+    matchLabels: 
+      app: reviews
+      version: v1
   replicas: 1
   template:
     metadata:
@@ -97,7 +105,7 @@ spec:
             memory: "20Mi"
             cpu: "5m"
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v2
@@ -105,6 +113,10 @@ metadata:
     app: reviews
     version: v2
 spec:
+  selector:
+    matchLabels: 
+      app: reviews
+      version: v2
   replicas: 1
   template:
     metadata:
@@ -123,7 +135,7 @@ spec:
             memory: "20Mi"
             cpu: "5m"
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v3
@@ -131,6 +143,10 @@ metadata:
     app: reviews
     version: v3
 spec:
+  selector:
+    matchLabels: 
+      app: reviews
+      version: v3
   replicas: 1
   template:
     metadata:
@@ -167,7 +183,7 @@ spec:
   selector:
     app: productpage
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productpage-v1
@@ -175,6 +191,10 @@ metadata:
     app: productpage
     version: v1
 spec:
+  selector:
+    matchLabels: 
+      app: productpage
+      version: v1
   replicas: 1
   template:
     metadata:

@@ -1,5 +1,5 @@
 {{- range $key, $value := .Values.details -}}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: details-{{ $value.version }}
@@ -8,6 +8,10 @@ metadata:
     version: {{ $value.version }}
 spec:
   replicas: 1
+  selector:
+    matchLabels: 
+      app: details
+      version: {{ $value.version }}
   template:
     metadata:
       labels:
