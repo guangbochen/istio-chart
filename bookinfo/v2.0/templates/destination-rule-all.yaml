@@ -61,5 +61,4 @@ spec:
       version: {{ $value.version }}
   {{- end }}
   {{- end -}}
----
 {{- end }}
